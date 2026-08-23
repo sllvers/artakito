@@ -7,7 +7,7 @@ title: "Privacy Policy"
 
 **Last updated:** {August 23, 2026}
 
-This page explains what information is collected when you visit or use this website ("the Site"), and how it's handled.
+This page explains what information is collected when you visit or use this website artakito.com, and how it's handled.
 
 ## What we collect
 
