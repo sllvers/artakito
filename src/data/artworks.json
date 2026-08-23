@@ -1,0 +1,127 @@
+[
+  {
+    "catalog": "001",
+    "title": "Ranges",
+    "year": "2025",
+    "medium": "Acrylic on canvas",
+    "size": "91.5 x 152 ",
+    "price": "₹45,000",
+    "status": "available",
+    "image": "/artworks/1.jpg",
+    "featured": true
+  },
+  {
+    "catalog": "002",
+    "title": "WHITE WASH",
+    "year": "2025",
+    "medium": "Acrylic on canvas",
+    "size": "76 x 91.4 cm",
+    "price": "₹15,000",
+    "status": "available",
+    "image": "/artworks/2.jpg"
+  },
+  {
+    "catalog": "003",
+    "title": "HEAVY BENEATH",
+    "year": "2025",
+    "medium": "Acrylic on canvas",
+    "size": "76 x 77 cm",
+    "price": "₹15,000",
+    "status": "available",
+    "image": "/artworks/3.jpg"
+  },
+  {
+    "catalog": "004",
+    "title": "DOES A BUTCHER PRAY",
+    "year": "2025",
+    "medium": "Acrylic on canvas",
+    "size": "57 x 88 cm",
+    "price": "₹15,000",
+    "status": "available",
+    "image": "/artworks/4.jpg"
+  },
+  {
+    "catalog": "005",
+    "title": "EARLY MORNING",
+    "year": "2024",
+    "medium": "Acrylic on canvas",
+    "size": "60.5 x 89.5 cm",
+    "price": "₹20,000",
+    "status": "available",
+    "image": "/artworks/5.jpg"
+  },
+  {
+    "catalog": "006",
+    "title": "CAN YOU HEAR IT AS IT POURS",
+    "year": "2024",
+    "medium": "Acrylic on canvas",
+    "size": "74 x 132.5 cm",
+    "price": "₹1,00,000",
+    "status": "available",
+    "image": "/artworks/6.jpg"
+  },
+  {
+    "catalog": "007",
+    "title": "UNTITLED",
+    "year": "2026",
+    "medium": "Mixed Media",
+    "size": "52 x 76 cm",
+    "price": "₹5,000",
+    "status": "available",
+    "image": "/artworks/7.jpg"
+  },{
+    "catalog": "008",
+    "title": "UNTITLED",
+    "year": "2026",
+    "medium": "Mixed Media (charcoal soak-stain on paper)",
+    "size": "52 x 66.5 cm",
+    "price": "₹8,000",
+    "status": "available",
+    "image": "/artworks/8.jpg"
+  },{
+    "catalog": "009",
+    "title": "UNTITLED",
+    "year": "2026",
+    "medium": "Wash on catridge (mixed media)",
+    "size": "51.1 x 71 cm",
+    "price": "₹8,000",
+    "status": "available",
+    "image": "/artworks/9.jpg"
+  },{
+    "catalog": "010",
+    "title": "DIRTY",
+    "year": "2026",
+    "medium": "Wash on catridge (mixed media)",
+    "size": "55 x 75 cm",
+    "price": "₹10,000",
+    "status": "available",
+    "image": "/artworks/10.jpg"
+  },{
+    "catalog": "011",
+    "title": "UNTITLED",
+    "year": "2026",
+    "medium": "Wash on catridge (mixed media)",
+    "size": "53.2 x 73 cm",
+    "price": "₹13,000",
+    "status": "available",
+    "image": "/artworks/11.jpg"
+  },{
+    "catalog": "012",
+    "title": "UNTITLED",
+    "year": "2026",
+    "medium": "Wash on catridge (mixed media)",
+    "size": "55 × 75 cm",
+    "price": "₹8,000",
+    "status": "available",
+    "image": "/artworks/12.jpg"
+  },{
+    "catalog": "013",
+    "title": "UNTITLED",
+    "year": "2026",
+    "medium": "Mixed Media",
+    "size": "51.3 x 71 cm",
+    "price": "₹13,000",
+    "status": "available",
+    "image": "/artworks/13.jpg"
+  }
+]

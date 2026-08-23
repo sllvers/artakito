@@ -1,0 +1,128 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import artist from '../data/artist.json';
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
+---
+
+<Layout title={`Privacy Policy — ${artist.name}`}>
+  <div class="page">
+    <Nav />
+
+    <main class="privacy-page">
+      <h1>Privacy Policy</h1>
+      <p class="date"><strong>Last updated:</strong> August 23, 2026</p>
+
+      <div class="content">
+        <p>This page explains what information is collected when you visit or use this website ("the Site"), and how it's handled.</p>
+
+        <h2>What we collect</h2>
+        <p>The Site itself does not use analytics, tracking cookies, or any third-party advertising scripts.</p>
+        <p>The only personal information collected is what you choose to submit through the <strong>Contact</strong> page, which may include:</p>
+        <ul>
+          <li>Your name</li>
+          <li>Your email address</li>
+          <li>Your message, including the title of any artwork you're inquiring about</li>
+        </ul>
+
+        <h2>How it's used</h2>
+        <p>Information submitted through the Contact form is used solely to respond to your inquiry — for example, to answer questions about available work, pricing, or purchasing.</p>
+        <p>We do not sell, rent, or share your information with third parties for marketing purposes.</p>
+
+        <h2>Third-party processing</h2>
+        <p>Contact form submissions are processed using <a href="https://formspree.io" target="_blank" rel="noopener">Formspree</a>, a third-party form-handling service. When you submit the Contact form, your information is transmitted to and stored by Formspree in order to deliver it to us.</p>
+
+        <h2>Data retention</h2>
+        <p>We retain contact form submissions only as long as needed to respond to your inquiry, or as retained by Formspree per their own policies.</p>
+
+        <h2>Your rights</h2>
+        <p>You may request that any information you've submitted be deleted by contacting us at <a href={`mailto:${artist.inquireEmail}`}>{artist.inquireEmail}</a>. We will honor such requests within a reasonable timeframe.</p>
+
+        <h2>Changes to this policy</h2>
+        <p>This policy may be updated from time to time. Changes will be reflected by the "Last updated" date above.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about this policy can be sent directly via our <a href={`${base}/contact`}>Contact page</a> or via email at <a href={`mailto:${artist.inquireEmail}`}>{artist.inquireEmail}</a>.</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy`}>Privacy Policy</a></p>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .privacy-page {
+    flex: 1;
+    padding: 120px clamp(20px, 5vw, 64px) 80px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    margin: 0 0 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .date {
+    font-family: var(--font-label);
+    font-size: 0.8rem;
+    color: var(--umber);
+    margin: 0 0 40px;
+    letter-spacing: 0.04em;
+  }
+
+  .content p, .content li {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin: 0 0 20px;
+  }
+
+  .content ul {
+    margin: 0 0 20px;
+    padding-left: 24px;
+  }
+
+  .content h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin: 40px 0 16px;
+    color: var(--ink);
+  }
+
+  .content a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: 32px clamp(20px, 5vw, 64px) 48px;
+    text-align: center;
+  }
+
+  .fine {
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    color: var(--umber);
+  }
+
+  .fine a {
+    color: inherit;
+    text-decoration: underline;
+  }
+</style>

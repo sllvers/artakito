@@ -1,0 +1,259 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import artist from '../../data/artist.json';
+import artworks from '../../data/artworks.json';
+
+export function getStaticPaths() {
+  return artworks.map((artwork) => ({
+    params: { catalog: artwork.catalog },
+    props: { artwork },
+  }));
+}
+
+const { catalog } = Astro.params;
+const { artwork } = Astro.props;
+
+if (!artwork) {
+  return Astro.redirect('/works');
+}
+
+const isSold = artwork.status === 'sold';
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
+const contactUrl = `${base}/contact?piece=${encodeURIComponent(artwork.title)}`;
+---
+
+<Layout title={`${artwork.title} — ${artist.name}`}>
+  <Nav />
+
+  <div class="back-bar">
+    <a href={`${base}/works`} class="back-link">← Back to Works</a>
+  </div>
+
+  <main class="detail-container">
+    <div class="image-column">
+      <div class="zoom-frame" id="zoomFrame">
+        <img
+          src={artwork.image}
+          alt={artwork.title}
+          transition:name={`artwork-${artwork.catalog}`}
+          id="zoomImage"
+        />
+        {isSold && <span class="sold-tag">Sold</span>}
+      </div>
+    </div>
+
+    <div class="info-column">
+      <span class="catalog">{artwork.catalog}</span>
+      <h1 class="title">{artwork.title}</h1>
+      <p class="meta">{artwork.medium}, {artwork.year}</p>
+      <p class="size">{artwork.size}</p>
+
+      <div class="purchase-box">
+        <div class="price">{artwork.price}</div>
+        {isSold ? (
+          <span class="status-sold">Sold</span>
+        ) : (
+          <a class="buy-button" href={contactUrl}>
+            Acquire Piece
+          </a>
+        )}
+      </div>
+
+      <div class="inquiry-note">
+        <p>Interested in this piece or arranging a studio visit?</p>
+        <a class="inquire-link" href={contactUrl}>Inquire about this piece →</a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  function initDetailZoom() {
+    const frame = document.getElementById('zoomFrame');
+    const img = document.getElementById('zoomImage') as HTMLImageElement;
+    if (!frame || !img) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(hover: none)').matches) {
+      return;
+    }
+
+    frame.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = frame.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      img.style.transformOrigin = `${x}% ${y}%`;
+      img.style.transform = 'scale(1.8)';
+    });
+
+    frame.addEventListener('mouseleave', () => {
+      img.style.transformOrigin = 'center center';
+      img.style.transform = 'scale(1)';
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initDetailZoom);
+  document.addEventListener('astro:page-load', initDetailZoom);
+</script>
+
+<style>
+  .back-bar {
+    padding: 16px clamp(20px, 5vw, 64px);
+  }
+
+  .back-link {
+    font-family: var(--font-label);
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--umber);
+    transition: color 150ms ease;
+  }
+
+  .back-link:hover {
+    color: var(--ink);
+  }
+
+  .detail-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 clamp(20px, 5vw, 64px) 80px;
+  }
+
+  @media (min-width: 768px) {
+    .detail-container {
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: start;
+      gap: 64px;
+    }
+  }
+
+  .zoom-frame {
+    position: relative;
+    background: #fff;
+    padding: 16px;
+    box-shadow:
+      0 2px 4px rgba(32, 29, 26, 0.08),
+      0 16px 32px -12px rgba(32, 29, 26, 0.35);
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  .zoom-frame img {
+    width: 100%;
+    height: auto;
+    transition: transform 150ms ease-out;
+  }
+
+  .sold-tag {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--wall);
+    color: var(--umber);
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    z-index: 2;
+  }
+
+  .info-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .catalog {
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    color: var(--umber);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    margin: 0 0 12px;
+    line-height: 1.15;
+  }
+
+  .meta {
+    font-size: 1rem;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+
+  .size {
+    font-family: var(--font-label);
+    font-size: 0.9rem;
+    color: var(--umber);
+    margin: 0 0 32px;
+  }
+
+  .purchase-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+
+  .price {
+    font-family: var(--font-label);
+    font-size: 1.25rem;
+    color: var(--ink);
+  }
+
+  .buy-button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    font-family: var(--font-label);
+    font-size: 0.9rem;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: opacity 150ms ease;
+  }
+
+  .buy-button:hover {
+    opacity: 0.9;
+  }
+
+  .status-sold {
+    font-family: var(--font-label);
+    font-size: 0.9rem;
+    color: var(--sold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .inquiry-note p {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+    color: var(--umber);
+  }
+
+  .inquire-link {
+    font-family: var(--font-label);
+    font-size: 0.9rem;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+
+  .inquire-link:hover {
+    opacity: 0.7;
+  }
+</style>

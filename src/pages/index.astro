@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import artist from '../data/artist.json';
+---
+
+<Layout>
+  <Nav />
+
+  <section class="portrait">
+    <img src={artist.photo} alt={artist.name} />
+  </section>
+
+  <div class="content-wrapper">
+    <section class="bio-container">
+      <div class="bio-header">
+        <h1>{artist.name}</h1>
+        <p class="subtitle">Selected Writings & Statement</p>
+      </div>
+      <div class="bio-content">
+        {artist.bio.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .portrait {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100dvh;
+    margin: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: none;
+    transform: scale(1);
+    transition: transform 0.1s ease-out;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .portrait img {
+        animation: heroScale linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0vh 100vh;
+      }
+    }
+  }
+
+  @keyframes heroScale {
+    to {
+      transform: scale(1.05);
+      opacity: 0.85;
+    }
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 2;
+    background: var(--wall);
+    box-shadow: 0 -20px 40px rgba(32, 29, 26, 0.05);
+    margin-bottom: 0;
+  }
+
+  .bio-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin: 0 clamp(20px, 5vw, 64px);
+    padding: 96px 0;
+  }
+
+  @media (min-width: 768px) {
+    .bio-container {
+      grid-template-columns: 350px 1fr;
+      gap: 64px;
+    }
+  }
+
+  .bio-header h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    margin: 0 0 8px;
+  }
+
+  .subtitle {
+    font-family: var(--font-label);
+    font-size: 0.8rem;
+    color: var(--umber);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .bio-content {
+    max-width: 72ch;
+  }
+
+  .bio-content p {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: var(--ink);
+    margin: 0 0 24px;
+  }
+</style>
