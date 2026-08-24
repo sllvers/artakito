@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import artist from '../data/artist.json';
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
+const homeUrl = base || '/';
+---
+
+<Layout title={`Page Not Found — ${artist.name}`}>
+  <div class="page">
+    <Nav />
+
+    <main class="not-found-content">
+      <h1>This piece isn't here</h1>
+      <p>The page you are looking for doesn't exist or has been moved.</p>
+      
+      <div class="actions">
+        <a href={homeUrl} class="button">Return Home</a>
+        <a href={`${base}/works`} class="link-works">Browse Works →</a>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy`}>Privacy Policy</a></p>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .not-found-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px clamp(20px, 5vw, 64px) 80px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0 0 16px;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--umber);
+    margin: 0 0 32px;
+    line-height: 1.6;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .button {
+    background: var(--ink);
+    color: var(--wall);
+    text-decoration: none;
+    font-family: var(--font-label);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    padding: 12px 24px;
+    transition: opacity 150ms ease;
+  }
+
+  .button:hover {
+    opacity: 0.85;
+  }
+
+  .link-works {
+    font-family: var(--font-label);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+    transition: opacity 150ms ease;
+  }
+
+  .link-works:hover {
+    opacity: 0.7;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: 32px clamp(20px, 5vw, 64px) 48px;
+    text-align: center;
+  }
+
+  .fine {
+    font-family: var(--font-label);
+    font-size: 0.75rem;
+    color: var(--umber);
+  }
+
+  .fine a {
+    color: inherit;
+    text-decoration: underline;
+  }
+</style>
