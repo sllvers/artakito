@@ -2,6 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import artist from '../data/artist.json';
+import artworks from '../data/artworks.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const worksUrl = `${base}/works`;
+const ranges = artworks.find((artwork) => artwork.catalog === '001');
 ---
 
 <Layout>
@@ -9,16 +14,41 @@ import artist from '../data/artist.json';
 
   <section class="portrait">
     <img src={artist.photo} alt={artist.name} />
+    <div class="hero-caption">
+      <h1>{artist.name}</h1>
+      <a href={worksUrl}>View Works →</a>
+    </div>
   </section>
 
   <div class="content-wrapper">
-    <section class="bio-container">
-      <div class="bio-header">
-        <h1>{artist.name}</h1>
-        <p class="subtitle"> Artist Note</p>
+    <section class="bio-container" aria-labelledby="artist-note">
+      <div class="bio-opening">
+        <div class="bio-content">
+          <h2 id="artist-note">Artist Note</h2>
+          <blockquote>“{artist.bio.quote}”</blockquote>
+          <p>{artist.bio.roots}</p>
+          <h3>A shift away from realism</h3>
+          <p>{artist.bio.turningPoint}</p>
+        </div>
+        {ranges && (
+          <figure class="bio-artwork">
+            <img
+              src={`${base}${ranges.galleryImage}-1280.webp`}
+              srcset={`${base}${ranges.galleryImage}-640.webp 640w, ${base}${ranges.galleryImage}-1280.webp 1280w`}
+              sizes="(min-width: 800px) 48vw, 90vw"
+              alt="Detail of Ranges showing pale paint drips beneath a dark, curved ridge"
+              loading="lazy"
+            />
+            <figcaption>
+              <a href={`${worksUrl}/${ranges.catalog}`}><cite>{ranges.title}</cite>, {ranges.year} · View full work →</a>
+            </figcaption>
+          </figure>
+        )}
       </div>
-      <div class="bio-content">
-        {artist.bio.map((paragraph) => <p>{paragraph}</p>)}
+      <div class="bio-content bio-closing">
+        <h3>Landscapes of lived experience</h3>
+        <p>{artist.bio.practice}</p>
+        <a class="bio-link" href={worksUrl}>Explore the work →</a>
       </div>
     </section>
   </div>
@@ -42,6 +72,32 @@ import artist from '../data/artist.json';
     box-shadow: none;
     transform: scale(1);
     transition: transform 0.1s ease-out;
+  }
+
+  .hero-caption {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 64px clamp(20px, 5vw, 64px) clamp(24px, 5vw, 56px);
+    background: linear-gradient(transparent, rgba(32, 29, 26, 0.82));
+    color: #fff;
+  }
+
+  .hero-caption h1 {
+    font: 500 clamp(2.6rem, 6vw, 4.5rem)/1 var(--font-display);
+    margin: 0 0 12px;
+  }
+
+  .hero-caption a {
+    display: inline-block;
+    padding: 10px 16px;
+    background: var(--wall);
+    color: var(--ink);
+    font: 0.9rem var(--font-label);
+    text-decoration: none;
+  }
+
+  .hero-caption a:hover {
+    text-decoration: underline;
   }
 
   @supports (animation-timeline: scroll()) {
@@ -70,38 +126,44 @@ import artist from '../data/artist.json';
   }
 
   .bio-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
-    margin: 0 clamp(20px, 5vw, 64px);
-    padding: 96px 0;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vw, 112px) clamp(20px, 5vw, 64px);
   }
 
-  @media (min-width: 768px) {
-    .bio-container {
-      grid-template-columns: 350px 1fr;
-      gap: 64px;
+  .bio-opening {
+    display: grid;
+    gap: clamp(32px, 6vw, 88px);
+    align-items: start;
+  }
+
+  @media (min-width: 800px) {
+    .bio-opening {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
   }
 
-  .bio-header h1 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    margin: 0 0 8px;
-  }
-
-  .subtitle {
-    font-family: var(--font-label);
-    font-size: 0.8rem;
-    color: var(--umber);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin: 0;
-  }
-
   .bio-content {
-    max-width: 72ch;
+    max-width: 60ch;
+  }
+
+  .bio-content h2 {
+    margin: 0 0 24px;
+    color: var(--accent);
+    font: 500 0.8rem var(--font-label);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .bio-content blockquote {
+    margin: 0 0 32px;
+    font: 500 clamp(1.85rem, 3.5vw, 3.5rem)/1.14 var(--font-display);
+    text-wrap: pretty;
+  }
+
+  .bio-content h3 {
+    margin: 28px 0 8px;
+    font: 500 clamp(1.25rem, 2vw, 1.65rem)/1.25 var(--font-display);
   }
 
   .bio-content p {
@@ -109,6 +171,42 @@ import artist from '../data/artist.json';
     font-size: 1.1rem;
     line-height: 1.75;
     color: var(--ink);
-    margin: 0 0 24px;
+    margin: 0;
+  }
+
+  .bio-artwork {
+    margin: 0;
+  }
+
+  .bio-artwork img {
+    width: 100%;
+    aspect-ratio: 5 / 6;
+    object-fit: cover;
+    object-position: 63% center;
+  }
+
+  .bio-artwork figcaption,
+  .bio-link {
+    font: 0.85rem/1.5 var(--font-label);
+    color: var(--accent);
+  }
+
+  .bio-artwork figcaption {
+    margin-top: 12px;
+  }
+
+  .bio-closing {
+    margin-top: clamp(32px, 5vw, 64px);
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .bio-closing h3 {
+    margin-top: 0;
+  }
+
+  .bio-link {
+    display: inline-block;
+    margin-top: 20px;
   }
 </style>

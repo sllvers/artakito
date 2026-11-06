@@ -5,7 +5,6 @@ import artist from '../data/artist.json';
 import artworks from '../data/artworks.json';
 
 const backgroundImage = artworks[0]?.image ?? '';
-const piece = Astro.url.searchParams.get('piece');
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 ---
@@ -23,12 +22,9 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 
         <div class="grid">
           <div class="intro">
-            {piece ? (
-              <p class="inquiry-title">Inquiring about: <strong>{piece}</strong></p>
-            ) : (
-              <p>To contact the artist, please fill out the form.</p>
-            )}
-            <p class="or">Or write directly to <a href={`mailto:${artist.inquireEmail}`}>{artist.inquireEmail}</a>.</p>
+            <p id="general-inquiry">To contact the artist, please fill out the form.</p>
+            <p id="artwork-inquiry" class="inquiry-title" hidden>Inquiring about: <strong></strong></p>
+            <p class="or">Or write directly to {artist.inquireEmail}.</p>
 
             {artist.instagram && (
               <div class="socials">
@@ -43,9 +39,9 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
             )}
           </div>
 
-          <form class="form" action={artist.formEndpoint} method="POST">
-            <input type="hidden" name="piece" value={piece || ''} />
-            <input type="hidden" name="_subject" value={piece ? `Inquiry about ${piece}` : 'General Inquiry'} />
+          <form id="contact-form" class="form" action={artist.formEndpoint} method="POST">
+            <input type="hidden" name="piece" />
+            <input type="hidden" name="_subject" value="General Inquiry" />
             <div class="row">
               <label>
                 <span>First Name</span>
@@ -63,7 +59,7 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
               </label>
               <label>
                 <span>Subject</span>
-                <input type="text" name="subject" value={piece ? `Inquiry about ${piece}` : ''} />
+                <input type="text" name="subject" />
               </label>
             </div>
             <label class="message">
@@ -81,6 +77,25 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
     </div>
   </div>
 </Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const form = document.querySelector<HTMLFormElement>('#contact-form');
+    const general = document.getElementById('general-inquiry');
+    const inquiry = document.getElementById('artwork-inquiry');
+    const title = inquiry?.querySelector('strong');
+    if (!form || !general || !inquiry || !title) return;
+
+    const piece = new URLSearchParams(window.location.search).get('piece')?.trim() ?? '';
+    const subject = piece ? `Inquiry about ${piece}` : '';
+    general.hidden = Boolean(piece);
+    inquiry.hidden = !piece;
+    title.textContent = piece;
+    form.querySelector<HTMLInputElement>('input[name="piece"]')!.value = piece;
+    form.querySelector<HTMLInputElement>('input[name="_subject"]')!.value = subject || 'General Inquiry';
+    form.querySelector<HTMLInputElement>('input[name="subject"]')!.value = subject;
+  });
+</script>
 
 <style>
   .page {

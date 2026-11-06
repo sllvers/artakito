@@ -10,9 +10,10 @@ interface Props {
   price: string;
   status: 'available' | 'sold';
   image: string;
+  galleryImage?: string;
 }
 
-const { catalog, title, year, medium, size, price, status, image } = Astro.props;
+const { catalog, title, year, medium, size, price, status, image, galleryImage } = Astro.props;
 const isSold = status === 'sold';
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
@@ -23,7 +24,14 @@ const detailUrl = `${base}/works/${encodeURIComponent(catalog)}`;
 <article class="card">
   <a href={detailUrl} class="frame-link">
     <div class="frame">
-      <img src={image} alt={title} loading="lazy" transition:name={`artwork-${catalog}`} />
+      <img
+        src={galleryImage ? `${base}${galleryImage}-1280.webp` : image}
+        srcset={galleryImage ? `${base}${galleryImage}-640.webp 640w, ${base}${galleryImage}-1280.webp 1280w` : undefined}
+        sizes={galleryImage ? '(max-width: 400px) calc(100vw - 60px), (max-width: 1000px) calc(90vw - 20px), 880px' : undefined}
+        alt={title}
+        loading="lazy"
+        transition:name={`artwork-${catalog}`}
+      />
       {isSold && <span class="sold-tag">Sold</span>}
       <div class="image-overlay">
         <div class="overlay-content">

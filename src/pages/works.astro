@@ -5,8 +5,6 @@ import ArtworkCard from '../components/ArtworkCard.astro';
 import artist from '../data/artist.json';
 import artworks from '../data/artworks.json';
 
-const subject = encodeURIComponent('Inquiry — general');
-const mailto = `mailto:${artist.inquireEmail}?subject=${subject}`;
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 ---
@@ -29,7 +27,7 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
   </section>
 
   <footer class="site-footer">
-    <p>For inquiries, availability, or studio visits, write to <a href={mailto}>{artist.inquireEmail}</a>.</p>
+    <p>For inquiries, availability, or studio visits, <a href={`${base}/contact`}>contact the artist</a> or write to {artist.inquireEmail}.</p>
     <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy`}>Privacy Policy</a></p>
   </footer>
 </Layout>
@@ -136,6 +134,16 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
   .fine a {
     color: inherit;
     text-decoration: underline;
+  }
+
+  @media (max-width: 767px) {
+    .gallery {
+      gap: 48px;
+    }
+
+    .gallery-item {
+      min-height: 0;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
