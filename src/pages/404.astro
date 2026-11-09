@@ -8,7 +8,7 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 const homeUrl = base || '/';
 ---
 
-<Layout title={`Page Not Found — ${artist.name}`}>
+<Layout title={`Page Not Found — ${artist.name}`} noindex>
   <div class="page">
     <Nav />
 

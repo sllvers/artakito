@@ -24,7 +24,10 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 const contactUrl = `${base}/contact?piece=${encodeURIComponent(artwork.title)}`;
 ---
 
-<Layout title={`${artwork.title} — ${artist.name}`}>
+<Layout
+  title={`${artwork.title} — ${artist.name}`}
+  description={`${artwork.title} by ${artist.name}, ${artwork.year}. ${artwork.medium}. View the artwork and inquire about availability.`}
+>
   <Nav />
 
   <div class="back-bar">
