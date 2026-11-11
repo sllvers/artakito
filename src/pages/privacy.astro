@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
-import artist from '../data/artist.json';
+import { artist } from '../lib/content';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
@@ -44,7 +44,7 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
         <p>This policy may be updated from time to time. Changes will be reflected by the "Last updated" date above.</p>
 
         <h2>Contact</h2>
-        <p>Questions about this policy can be sent directly via our <a href={`${base}/contact`}>Contact page</a> or via email at <a href={`mailto:${artist.inquireEmail}`}>{artist.inquireEmail}</a>.</p>
+        <p>Questions about this policy can be sent directly via our <a href={`${base}/contact/`}>Contact page</a> or via email at <a href={`mailto:${artist.inquireEmail}`}>{artist.inquireEmail}</a>.</p>
       </div>
     </main>
 

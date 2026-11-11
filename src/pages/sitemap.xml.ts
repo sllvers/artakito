@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import artworks from '../data/artworks.json';
+import { artworks } from '../lib/content';
 
 // Explicit public routes keep error pages and future private routes out of the sitemap.
 export const GET: APIRoute = ({ site }) => {

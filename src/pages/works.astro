@@ -2,8 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import ArtworkCard from '../components/ArtworkCard.astro';
-import artist from '../data/artist.json';
-import artworks from '../data/artworks.json';
+import { artist } from '../lib/content';
+import { artworks } from '../lib/content';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
@@ -27,8 +27,8 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
   </section>
 
   <footer class="site-footer">
-    <p>For inquiries, availability, or studio visits, <a href={`${base}/contact`}>contact the artist</a> or write to {artist.inquireEmail}.</p>
-    <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy`}>Privacy Policy</a></p>
+    <p>For inquiries, availability, or studio visits, <a href={`${base}/contact/`}>contact the artist</a> or write to {artist.inquireEmail}.</p>
+    <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy/`}>Privacy Policy</a></p>
   </footer>
 </Layout>
 

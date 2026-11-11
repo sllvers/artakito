@@ -1,6 +1,6 @@
 ---
-import artist from '../data/artist.json';
-import artworks from '../data/artworks.json';
+import { artist } from '../lib/content';
+import { artworks } from '../lib/content';
 
 const years = [...new Set(artworks.map((a) => a.year))].sort((a, b) => b.localeCompare(a));
 const rawBase = import.meta.env.BASE_URL;
@@ -14,13 +14,13 @@ const homeUrl = base || '/';
   </a>
 
   <div class="right">
-    <a class="contact-link" href={`${base}/contact`}>Contact</a>
+    <a class="contact-link" href={`${base}/contact/`}>Contact</a>
     <details class="menu">
       <summary>Works</summary>
       <nav class="dropdown">
-        <a href={`${base}/works`}>All Works</a>
+        <a href={`${base}/works/`}>All Works</a>
         {years.map((y) => (
-          <a href={`${base}/works?year=${y}`}>{y}</a>
+          <a href={`${base}/works/?year=${y}`}>{y}</a>
         ))}
       </nav>
     </details>

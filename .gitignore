@@ -4,3 +4,7 @@ dist/
 package-lock.json
 .aider*
 .DS*
+.env
+.env.*
+!.env.example
+.sanity/

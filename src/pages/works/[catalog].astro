@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
-import artist from '../../data/artist.json';
-import artworks from '../../data/artworks.json';
+import { artist } from '../../lib/content';
+import { artworks } from '../../lib/content';
 
 export function getStaticPaths() {
   return artworks.map((artwork) => ({
@@ -15,13 +15,13 @@ const { catalog } = Astro.params;
 const { artwork } = Astro.props;
 
 if (!artwork) {
-  return Astro.redirect('/works');
+  return Astro.redirect('/works/');
 }
 
 const isSold = artwork.status === 'sold';
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
-const contactUrl = `${base}/contact?piece=${encodeURIComponent(artwork.title)}`;
+const contactUrl = `${base}/contact/?piece=${encodeURIComponent(artwork.title)}`;
 ---
 
 <Layout
@@ -31,7 +31,7 @@ const contactUrl = `${base}/contact?piece=${encodeURIComponent(artwork.title)}`;
   <Nav />
 
   <div class="back-bar">
-    <a href={`${base}/works`} class="back-link">← Back to Works</a>
+    <a href={`${base}/works/`} class="back-link">← Back to Works</a>
   </div>
 
   <main class="detail-container">
@@ -39,7 +39,7 @@ const contactUrl = `${base}/contact?piece=${encodeURIComponent(artwork.title)}`;
       <div class="zoom-frame" id="zoomFrame">
         <img
           src={artwork.image}
-          alt={artwork.title}
+          alt={artwork.alt}
           transition:name={`artwork-${artwork.catalog}`}
           id="zoomImage"
         />

@@ -1,5 +1,4 @@
 ---
-import artist from '../data/artist.json';
 
 interface Props {
   catalog: string;
@@ -10,25 +9,27 @@ interface Props {
   price: string;
   status: 'available' | 'sold';
   image: string;
-  galleryImage?: string;
+  thumbnail: string;
+  srcset: string;
+  alt: string;
 }
 
-const { catalog, title, year, medium, size, price, status, image, galleryImage } = Astro.props;
+const { catalog, title, year, medium, size, price, status, image, thumbnail, srcset, alt } = Astro.props;
 const isSold = status === 'sold';
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
-const contactUrl = `${base}/contact?piece=${encodeURIComponent(title)}`;
-const detailUrl = `${base}/works/${encodeURIComponent(catalog)}`;
+const contactUrl = `${base}/contact/?piece=${encodeURIComponent(title)}`;
+const detailUrl = `${base}/works/${encodeURIComponent(catalog)}/`;
 ---
 
 <article class="card">
   <a href={detailUrl} class="frame-link">
     <div class="frame">
       <img
-        src={galleryImage ? `${base}${galleryImage}-1280.webp` : image}
-        srcset={galleryImage ? `${base}${galleryImage}-640.webp 640w, ${base}${galleryImage}-1280.webp 1280w` : undefined}
-        sizes={galleryImage ? '(max-width: 400px) calc(100vw - 60px), (max-width: 1000px) calc(90vw - 20px), 880px' : undefined}
-        alt={title}
+        src={thumbnail}
+        srcset={srcset}
+        sizes="(max-width: 400px) calc(100vw - 60px), (max-width: 1000px) calc(90vw - 20px), 880px"
+        alt={alt}
         loading="lazy"
         transition:name={`artwork-${catalog}`}
       />

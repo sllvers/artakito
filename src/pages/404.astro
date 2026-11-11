@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
-import artist from '../data/artist.json';
+import { artist } from '../lib/content';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
@@ -18,12 +18,12 @@ const homeUrl = base || '/';
       
       <div class="actions">
         <a href={homeUrl} class="button">Return Home</a>
-        <a href={`${base}/works`} class="link-works">Browse Works →</a>
+        <a href={`${base}/works/`} class="link-works">Browse Works →</a>
       </div>
     </main>
 
     <footer class="site-footer">
-      <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy`}>Privacy Policy</a></p>
+      <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy/`}>Privacy Policy</a></p>
     </footer>
   </div>
 </Layout>
