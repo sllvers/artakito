@@ -1,4 +1,5 @@
 ---
+import Footer from '../../components/Footer.astro';
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import { artist } from '../../lib/content';
@@ -11,7 +12,6 @@ export function getStaticPaths() {
   }));
 }
 
-const { catalog } = Astro.params;
 const { artwork } = Astro.props;
 
 if (!artwork) {
@@ -19,15 +19,24 @@ if (!artwork) {
 }
 
 const isSold = artwork.status === 'sold';
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
+import { base } from '../../lib/site';
 const contactUrl = `${base}/contact/?piece=${encodeURIComponent(artwork.title)}`;
 ---
 
 <Layout
+  image={artwork.shareImage}
+  imageAlt={artwork.alt}
   title={`${artwork.title} — ${artist.name}`}
   description={`${artwork.title} by ${artist.name}, ${artwork.year}. ${artwork.medium}. View the artwork and inquire about availability.`}
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'VisualArtwork',
+    name: artwork.title, identifier: artwork.catalog,
+    creator: {'@type': 'Person', name: artist.name},
+    dateCreated: artwork.year, artMedium: artwork.medium,
+    image: artwork.shareImage, description: artwork.alt,
+    url: new URL(`${base}/works/${artwork.catalog}/`, Astro.site).href,
+  }).replace(/</g, '\u003c')} />
   <Nav />
 
   <div class="back-bar">
@@ -38,7 +47,11 @@ const contactUrl = `${base}/contact/?piece=${encodeURIComponent(artwork.title)}`
     <div class="image-column">
       <div class="zoom-frame" id="zoomFrame">
         <img
-          src={artwork.image}
+          src={artwork.thumbnail}
+          srcset={artwork.srcset}
+          sizes="(min-width: 768px) 54vw, 90vw"
+          width={artwork.width} height={artwork.height}
+          fetchpriority="high"
           alt={artwork.alt}
           transition:name={`artwork-${artwork.catalog}`}
           id="zoomImage"
@@ -59,17 +72,15 @@ const contactUrl = `${base}/contact/?piece=${encodeURIComponent(artwork.title)}`
           <span class="status-sold">Sold</span>
         ) : (
           <a class="buy-button" href={contactUrl}>
-            Acquire Piece
+            Inquire about this piece
           </a>
         )}
       </div>
 
-      <div class="inquiry-note">
-        <p>Interested in this piece or arranging a studio visit?</p>
-        <a class="inquire-link" href={contactUrl}>Inquire about this piece →</a>
-      </div>
+
     </div>
   </main>
+  <Footer />
 </Layout>
 
 <script>
@@ -96,7 +107,6 @@ const contactUrl = `${base}/contact/?piece=${encodeURIComponent(artwork.title)}`
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initDetailZoom);
   document.addEventListener('astro:page-load', initDetailZoom);
 </script>
 
@@ -241,22 +251,6 @@ const contactUrl = `${base}/contact/?piece=${encodeURIComponent(artwork.title)}`
     letter-spacing: 0.06em;
   }
 
-  .inquiry-note p {
-    margin: 0 0 8px;
-    font-size: 0.95rem;
-    color: var(--umber);
-  }
 
-  .inquire-link {
-    font-family: var(--font-label);
-    font-size: 0.9rem;
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid var(--accent);
-    padding-bottom: 2px;
-  }
 
-  .inquire-link:hover {
-    opacity: 0.7;
-  }
 </style>

@@ -1,11 +1,10 @@
 ---
+import Footer from '../components/Footer.astro';
 import Layout from './Layout.astro';
 import Nav from '../components/Nav.astro';
 import { artist } from '../lib/content';
 
 const { frontmatter } = Astro.props;
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 ---
 
 <Layout title={`${frontmatter?.title || 'Privacy Policy'} — ${artist.name}`}>
@@ -16,9 +15,7 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy/`}>Privacy Policy</a></p>
-    </footer>
+    <Footer />
   </div>
 </Layout>
 
@@ -70,20 +67,6 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
     text-decoration: underline;
   }
 
-  .site-footer {
-    border-top: 1px solid var(--line);
-    padding: 32px clamp(20px, 5vw, 64px) 48px;
-    text-align: center;
-  }
 
-  .fine {
-    font-family: var(--font-label);
-    font-size: 0.75rem;
-    color: var(--umber);
-  }
 
-  .fine a {
-    color: inherit;
-    text-decoration: underline;
-  }
 </style>

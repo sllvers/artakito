@@ -1,23 +1,23 @@
 ---
+import Footer from '../components/Footer.astro';
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import { artist } from '../lib/content';
 import { artworks } from '../lib/content';
 
+import {formEndpoint} from '../lib/site';
 const backgroundImage = artworks[0]?.image ?? '';
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 ---
 
 <Layout title={`Contact — ${artist.name}`}>
   <div class="page">
-    <img class="bg" src={backgroundImage} alt="" aria-hidden="true" />
+    <img class="bg" src={backgroundImage} srcset={artworks[0]?.srcset} sizes="100vw" width={artworks[0]?.width} height={artworks[0]?.height} alt="" aria-hidden="true" />
     <div class="scrim"></div>
 
     <div class="content">
       <Nav />
 
-      <section class="contact">
+      <main class="contact">
         <h1>Contact</h1>
 
         <div class="grid">
@@ -39,7 +39,8 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
             )}
           </div>
 
-          <form id="contact-form" class="form" action={artist.formEndpoint} method="POST">
+          <form id="contact-form" class="form" action={formEndpoint} method="POST">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="honeypot" />
             <input type="hidden" name="piece" />
             <input type="hidden" name="_subject" value="General Inquiry" />
             <div class="row">
@@ -67,13 +68,12 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
               <textarea name="message" rows="4" required></textarea>
             </label>
             <button type="submit">Submit</button>
+            <p id="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
-      </section>
+      </main>
 
-      <footer class="site-footer">
-        <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy/`}>Privacy Policy</a></p>
-      </footer>
+      <Footer />
     </div>
   </div>
 </Layout>
@@ -86,6 +86,24 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
     const title = inquiry?.querySelector('strong');
     if (!form || !general || !inquiry || !title) return;
 
+    if (!form.dataset.bound) {
+      form.dataset.bound = 'true';
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+        const status = form.querySelector<HTMLElement>('#form-status')!;
+        button.disabled = true;
+        status.textContent = 'Sending…';
+        try {
+          const response = await fetch(form.action, {method: 'POST', body: new FormData(form), headers: {Accept: 'application/json'}});
+          if (!response.ok) throw new Error('Submission failed');
+          status.textContent = 'Thank you. Your message has been sent.';
+          form.querySelector<HTMLTextAreaElement>('textarea')!.value = '';
+        } catch {
+          status.textContent = 'Your message could not be confirmed. Please try again or use the email shown on this page.';
+        } finally { button.disabled = false; }
+      });
+    }
     const piece = new URLSearchParams(window.location.search).get('piece')?.trim() ?? '';
     const subject = piece ? `Inquiry about ${piece}` : '';
     general.hidden = Boolean(piece);
@@ -98,6 +116,8 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
 </script>
 
 <style>
+  .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; }
+  button:disabled { opacity: .6; cursor: wait; }
   .page {
     position: relative;
     min-height: 100vh;
@@ -254,21 +274,8 @@ const base = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
     opacity: 0.85;
   }
 
-  .site-footer {
-    text-align: center;
-    padding: 24px 0 32px;
-  }
 
-  .fine {
-    font-family: var(--font-label);
-    font-size: 0.75rem;
-    color: var(--umber);
-  }
 
-  .fine a {
-    color: inherit;
-    text-decoration: underline;
-  }
 
   @media (max-width: 760px) {
     .grid {

@@ -7,7 +7,6 @@ export const GET: APIRoute = ({ site }) => {
     '/',
     '/works/',
     '/contact/',
-    '/privacy/',
     '/privacy-policy/',
     ...artworks.map(({ catalog }) => `/works/${encodeURIComponent(catalog)}/`),
   ];

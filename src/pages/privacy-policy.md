@@ -5,7 +5,7 @@ title: "Privacy Policy"
 
 # Privacy Policy
 
-**Last updated:** {August 23, 2026}
+**Last updated:** November 14, 2026
 
 This page explains what information is collected when you visit or use this website artakito.com, and how it's handled.
 
@@ -13,7 +13,7 @@ This page explains what information is collected when you visit or use this webs
 
 The Site itself does not use analytics, tracking cookies, or any third-party advertising scripts.
 
-The only personal information collected is what you choose to submit through the **Contact** page, which may include:
+Information you choose to submit through the **Contact** page, which may include:
 
 - Your name
 - Your email address
@@ -26,6 +26,8 @@ Information submitted through the Contact form is used solely to respond to your
 We do not sell, rent, or share your information with third parties for marketing purposes.
 
 ## Third-party processing
+
+Fonts are hosted with this website. Artwork and portrait images are delivered by Sanity’s image CDN. The website is hosted on GitHub Pages and served through Cloudflare. These infrastructure providers receive technical request information, such as IP addresses, to deliver the site.
 
 Contact form submissions are processed using [Formspree](https://formspree.io), a third-party form-handling service. When you submit the Contact form, your information is transmitted to and stored by Formspree in order to deliver it to us. Formspree's own privacy practices are described at [formspree.io/legal/privacy-policy](https://formspree.io/legal/privacy-policy).
 
@@ -45,4 +47,4 @@ This policy may be updated from time to time. Changes will be reflected by the "
 
 ## Contact
 
-Questions about this policy can be sent to our [Contact page](./contact).
+Questions about this policy can be sent to our [Contact page](/contact/).

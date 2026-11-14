@@ -4,6 +4,7 @@ import sanity from '@sanity/astro';
 export default defineConfig({
   site: 'https://artakito.com',
   trailingSlash: 'always',
+  redirects: {'/privacy/': '/privacy-policy/'},
   integrations: [sanity({
     projectId: 'mwymllh6',
     dataset: 'production',

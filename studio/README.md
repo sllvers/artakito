@@ -12,7 +12,7 @@ Use Node 22.12 or newer (`nvm use` from the repository root).
 
 ```sh
 cd studio
-pnpm install
+pnpm install --frozen-lockfile
 cp .env.example .env
 ```
 
@@ -23,12 +23,17 @@ The website uses the same public project/dataset in `astro.config.mjs`. Build
 with `pnpm run build` from the repository root. A failed Sanity request stops
 the build to avoid publishing missing or stale content.
 
-## Initial content import
+## Editing content
 
-`pnpm run import-content` imports existing JSON and local images using the logged-in
-Sanity CLI account. It skips artwork identifiers already present and preserves
-the existing artist singleton. Run only one import at a time. The original JSON
-and images are retained as the import source, not as a live fallback.
+Use **Feature on homepage** on one artwork to choose the homepage painting.
+If more than one is selected, the first in gallery order wins. The Artist profile
+contains editable story headings. Supply a visual image description for each work;
+titles alone are not sufficient alt text. Preserve intentional title casing and
+confirm dimension units with the artist rather than guessing.
+
+The initial import is complete. Local import data and duplicate images have been
+removed; Sanity is the content source. Historical originals remain in Git history.
+`cleanup-content.ts` is a revision-guarded, dry-run-by-default maintenance script.
 
 ## Website publishing
 

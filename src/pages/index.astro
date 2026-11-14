@@ -1,19 +1,21 @@
 ---
+import Footer from '../components/Footer.astro';
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import { artist } from '../lib/content';
 import { artworks } from '../lib/content';
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import {base} from '../lib/site';
 const worksUrl = `${base}/works/`;
-const ranges = artworks.find((artwork) => artwork.catalog === '001');
+const featuredArtwork = artworks.find((artwork) => artwork.featured);
 ---
 
 <Layout>
   <Nav />
 
+  <main>
   <section class="portrait">
-    <img src={artist.photo} alt={artist.name} />
+    <img src={artist.photo} srcset={artist.photoSrcset} sizes="100vw" width={artist.width} height={artist.height} fetchpriority="high" alt={artist.name} />
     <div class="hero-caption">
       <h1>{artist.name}</h1>
       <a href={worksUrl}>View Works →</a>
@@ -22,36 +24,39 @@ const ranges = artworks.find((artwork) => artwork.catalog === '001');
 
   <div class="content-wrapper">
     <section class="bio-container" aria-labelledby="artist-note">
-      <div class="bio-opening">
+      <header class="bio-opening">
         <div class="bio-content">
           <h2 id="artist-note">Artist Note</h2>
           <blockquote>“{artist.bio.quote}”</blockquote>
           <p>{artist.bio.roots}</p>
-          <h3>A shift away from realism</h3>
-          <p>{artist.bio.turningPoint}</p>
         </div>
-        {ranges && (
+      </header>
+        {featuredArtwork && (
           <figure class="bio-artwork">
             <img
-              src={ranges.thumbnail}
-              srcset={ranges.srcset}
-              sizes="(min-width: 800px) 48vw, 90vw"
-              alt="Detail of Ranges showing pale paint drips beneath a dark, curved ridge"
+              src={featuredArtwork.thumbnail}
+              srcset={featuredArtwork.srcset}
+              sizes="(min-width: 1080px) 960px, 90vw"
+              alt={featuredArtwork.alt}
+              width={featuredArtwork.width} height={featuredArtwork.height}
               loading="lazy"
             />
             <figcaption>
-              <a href={`${worksUrl}${ranges.catalog}/`}><cite>{ranges.title}</cite>, {ranges.year} · View full work →</a>
+              <a href={`${worksUrl}${featuredArtwork.catalog}/`}><cite>{featuredArtwork.title}</cite>, {featuredArtwork.year} · View full work →</a>
             </figcaption>
           </figure>
         )}
-      </div>
-      <div class="bio-content bio-closing">
-        <h3>Landscapes of lived experience</h3>
+      <div class="bio-content bio-story">
+        <h3>{artist.bio.turningPointHeading}</h3>
+        <p>{artist.bio.turningPoint}</p>
+        <h3>{artist.bio.practiceHeading}</h3>
         <p>{artist.bio.practice}</p>
         <a class="bio-link" href={worksUrl}>Explore the work →</a>
       </div>
     </section>
   </div>
+  </main>
+  <Footer />
 </Layout>
 
 <style>
@@ -126,25 +131,18 @@ const ranges = artworks.find((artwork) => artwork.catalog === '001');
   }
 
   .bio-container {
-    max-width: 1320px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: clamp(48px, 8vw, 112px) clamp(20px, 5vw, 64px);
+    padding: clamp(48px, 8vw, 112px) clamp(20px, 5vw, 60px);
   }
 
   .bio-opening {
-    display: grid;
-    gap: clamp(32px, 6vw, 88px);
-    align-items: start;
-  }
-
-  @media (min-width: 800px) {
-    .bio-opening {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    }
+    margin-bottom: clamp(32px, 5vw, 56px);
   }
 
   .bio-content {
-    max-width: 60ch;
+    max-width: 68ch;
+    margin-inline: auto;
   }
 
   .bio-content h2 {
@@ -157,7 +155,7 @@ const ranges = artworks.find((artwork) => artwork.catalog === '001');
 
   .bio-content blockquote {
     margin: 0 0 32px;
-    font: 500 clamp(1.85rem, 3.5vw, 3.5rem)/1.14 var(--font-display);
+    font: 500 clamp(1.85rem, 3.5vw, 3rem)/1.18 var(--font-display);
     text-wrap: pretty;
   }
 
@@ -180,9 +178,7 @@ const ranges = artworks.find((artwork) => artwork.catalog === '001');
 
   .bio-artwork img {
     width: 100%;
-    aspect-ratio: 5 / 6;
-    object-fit: cover;
-    object-position: 63% center;
+    height: auto;
   }
 
   .bio-artwork figcaption,
@@ -195,13 +191,11 @@ const ranges = artworks.find((artwork) => artwork.catalog === '001');
     margin-top: 12px;
   }
 
-  .bio-closing {
-    margin-top: clamp(32px, 5vw, 64px);
-    padding-top: 24px;
-    border-top: 1px solid var(--line);
+  .bio-story {
+    margin-top: clamp(40px, 6vw, 72px);
   }
 
-  .bio-closing h3 {
+  .bio-story h3:first-child {
     margin-top: 0;
   }
 

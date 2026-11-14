@@ -1,0 +1,17 @@
+---
+import {artist} from '../lib/content';
+import {base} from '../lib/site';
+interface Props { inquiries?: boolean }
+const {inquiries = false} = Astro.props;
+---
+<footer class="site-footer">
+  {inquiries && <p>For inquiries, availability, or studio visits, <a href={`${base}/contact/`}>contact the artist</a> or write to {artist.inquireEmail}.</p>}
+  <p class="fine">&copy; {new Date().getFullYear()} {artist.name} &bull; <a href={`${base}/privacy-policy/`}>Privacy Policy</a></p>
+</footer>
+<style>
+.site-footer { position: relative; background: var(--wall); border-top: 1px solid var(--line); padding: 32px clamp(20px, 5vw, 64px) 48px; text-align: center; }
+p { margin: 0 0 6px; font-size: .9rem; }
+a { color: var(--accent); }
+.fine { font: .75rem var(--font-label); color: var(--umber); }
+.fine a { color: inherit; }
+</style>
